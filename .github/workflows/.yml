@@ -8,6 +8,10 @@ on:
 jobs:
   run:
     runs-on: ubuntu-latest
+    env:
+      SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
+      SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
+      RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3

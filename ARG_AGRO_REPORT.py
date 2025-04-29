@@ -1,9 +1,15 @@
 import feedparser
+import os
 import smtplib
 from email.mime.text import MIMEText
 from datetime import datetime, timedelta
 import time
 import unicodedata
+
+# Email settings from GitHub Secrets
+SENDER_EMAIL = os.getenv("SENDER_EMAIL")
+SENDER_PASSWORD = os.getenv("SENDER_PASSWORD")
+RECIPIENT_EMAIL = os.getenv("RECIPIENT_EMAIL")
 
 # 📰 List of RSS Feeds from top Argentinian news outlets
 # CLARIN: http://clarin.com/rss.html
