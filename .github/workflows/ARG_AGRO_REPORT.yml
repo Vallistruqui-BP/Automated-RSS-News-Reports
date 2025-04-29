@@ -13,14 +13,14 @@ jobs:
       SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
       RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Upgrade pip
         run: pip install --upgrade pip
 
       - name: Install dependencies
         run: pip install -r requirements.txt
-
-      - name: Checkout code
-        uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v4
