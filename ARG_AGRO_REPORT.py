@@ -5,15 +5,22 @@ from email.mime.text import MIMEText
 from datetime import datetime, timedelta
 import time
 import unicodedata
+import sys
 
 # Email settings from GitHub Secrets
-#SENDER_EMAIL = os.getenv("SENDER_EMAIL")
-#SENDER_PASSWORD = os.getenv("SENDER_PASSWORD")
-#RECIPIENT_EMAIL = os.getenv("RECIPIENT_EMAIL")
+SENDER_EMAIL = os.getenv("SENDER_EMAIL")
+SENDER_PASSWORD = os.getenv("SENDER_PASSWORD")
+RECIPIENT_EMAIL = os.getenv("RECIPIENT_EMAIL")
 
-SENDER_EMAIL = "vallarinopedro@gmail.com"
-SENDER_PASSWORD = "gqxo ghrh bulr dhki"
-RECIPIENT_EMAIL = "mcasado@agrality.com"
+# Safety check for missing env vars
+missing = []
+if not SENDER_EMAIL: missing.append("SENDER_EMAIL")
+if not SENDER_PASSWORD: missing.append("SENDER_PASSWORD")
+if not RECIPIENT_EMAIL: missing.append("RECIPIENT_EMAIL")
+
+if missing:
+    print(f"❌ ERROR: Missing required environment variables: {', '.join(missing)}")
+    sys.exit(1)
 
 KEYWORDS = [
     "maiz",
