@@ -3,7 +3,7 @@ name: Run Agro News Bot
 on:
   schedule:
     - cron: '0 11 * * *'  # ⏰ Every day at 8:00 AM Argentina (11:00 UTC)
-  workflow_dispatch:     # Optional: manually trigger from GitHub if you want
+  workflow_dispatch:
 
 jobs:
   run:
@@ -12,20 +12,21 @@ jobs:
       SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
       SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
       RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
 
       - name: Upgrade pip
         run: pip install --upgrade pip
 
       - name: Install dependencies
         run: pip install -r requirements.txt
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
 
       - name: Run script
         run: python ARG_AGRO_REPORT.py
