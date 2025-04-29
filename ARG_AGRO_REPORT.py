@@ -7,9 +7,13 @@ import time
 import unicodedata
 
 # Email settings from GitHub Secrets
-SENDER_EMAIL = os.getenv("SENDER_EMAIL")
-SENDER_PASSWORD = os.getenv("SENDER_PASSWORD")
-RECIPIENT_EMAIL = os.getenv("RECIPIENT_EMAIL")
+#SENDER_EMAIL = os.getenv("SENDER_EMAIL")
+#SENDER_PASSWORD = os.getenv("SENDER_PASSWORD")
+#RECIPIENT_EMAIL = os.getenv("RECIPIENT_EMAIL")
+
+SENDER_EMAIL = "vallarinopedro@gmail.com"
+SENDER_PASSWORD = "gqxo ghrh bulr dhki"
+RECIPIENT_EMAIL = "mcasado@agrality.com"
 
 KEYWORDS = [
     "maiz",
