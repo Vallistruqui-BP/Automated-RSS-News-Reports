@@ -11,6 +11,25 @@ SENDER_EMAIL = os.getenv("SENDER_EMAIL")
 SENDER_PASSWORD = os.getenv("SENDER_PASSWORD")
 RECIPIENT_EMAIL = os.getenv("RECIPIENT_EMAIL")
 
+KEYWORDS = [
+    "maiz",
+    "sorgo",
+    "girasol",
+    "trigo",
+    "dolar",
+    "importaciones",
+    "bioceres",
+    "remingtom",
+    "agidea",
+    "corteva",
+    "syngenta",
+    "gdm",
+    "los grobo",
+    "limagrain",
+    "rizobacter",
+    "bayer"
+]
+
 # 📰 List of RSS Feeds from top Argentinian news outlets
 # CLARIN: http://clarin.com/rss.html
 # LA NACION: https://www.lanacion.com.ar/arc/outboundfeeds/rss/
@@ -34,11 +53,6 @@ RECIPIENT_EMAIL = os.getenv("RECIPIENT_EMAIL")
 
 DAYS_BACK = 1  # 🔵 How many days back to search (1 = yesterday only, 2 = last two days, etc.)
 
-KEYWORDS = ["soja", "campo", "trigo", "maiz", "dolar", "exportaciones", "agro"]
-
-SENDER_EMAIL = "vallarinopedro@gmail.com"
-SENDER_PASSWORD = "gqxo ghrh bulr dhki"
-RECIPIENT_EMAIL = "vallarinopedro@gmail.com"
 
 RSS_FEEDS = [
 # LA NACION
