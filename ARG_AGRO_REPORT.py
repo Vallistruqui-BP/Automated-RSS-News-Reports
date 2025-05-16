@@ -28,6 +28,7 @@ KEYWORDS = [
     "girasol",
     "trigo",
     "importaciones",
+    "importacion",
     "bioceres",
     "remingtom",
     "agidea",
