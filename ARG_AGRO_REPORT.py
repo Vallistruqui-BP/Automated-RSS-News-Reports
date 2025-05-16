@@ -135,10 +135,10 @@ def normalize_text(text):
 # TIME WINDOW ----------------------------------------
 
 now = datetime.now()
-today_8am = now.replace(hour=8, minute=0, second=0, microsecond=0)
+today_9am = now.replace(hour=9, minute=0, second=0, microsecond=0)
 
 start_date = (now - timedelta(days=DAYS_BACK)).replace(hour=0, minute=0, second=0, microsecond=0)
-end_date = today_8am
+end_date = today_9am
 
 print(f"Filtering news from {start_date} to {end_date}")
 
