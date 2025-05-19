@@ -6,11 +6,28 @@ import smtplib
 import sys
 from datetime import datetime
 from email.mime.text import MIMEText
+import requests
+import zipfile
+import io
+
+token = "GITHUB_TOKEN_O_PERSONAL_ACCESS_TOKEN"
+repo = "usuario/repositorio"
+headers = {"Authorization": f"token {token}"}
+
+artifacts_url = f"https://api.github.com/repos/{repo}/actions/artifacts"
+response = requests.get(artifacts_url, headers=headers)
+data = response.json()
+
+for artifact in data['artifacts']:
+    download_url = artifact['archive_download_url']
+    r = requests.get(download_url, headers=headers)
+    z = zipfile.ZipFile(io.BytesIO(r.content))
+    z.extractall("artifacts_json")
 
 def load_and_merge(input_dir):
     seen = set()
     merged = {}
-    for path in glob.glob(f"{input_dir}/raw_*.json"):
+    for path in glob.glob(f"{input_dir}/RSS_FEEDS_*.json"):
         data = json.load(open(path, encoding="utf-8"))
         for source, articles in data.items():
             merged.setdefault(source, [])
