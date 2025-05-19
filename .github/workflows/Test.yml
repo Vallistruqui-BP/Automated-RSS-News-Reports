@@ -8,7 +8,7 @@ jobs:
     steps:
       - run: echo "test content" > test.txt
       - name: Upload artifact
-        uses: actions/upload-artifact@b6b27b4c18df34d5510c6a4209a41dfd3a2d4aa5
+        uses: actions/upload-artifact@v3.1.2
         with:
           name: test-artifact
           path: test.txt
