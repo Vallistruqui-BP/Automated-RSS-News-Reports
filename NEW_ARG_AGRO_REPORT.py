@@ -104,7 +104,7 @@ def parse_args():
     group = p.add_mutually_exclusive_group()
     group.add_argument("--since-days", type=int, default=1,
                        help="How many days back to include (default 1).")
-    group.add_argument("--since-hours", type=int,
+    group.add_argument("--since-hours", type=float,
                        help="How many hours back to include (overrides --since-days).")
     p.add_argument("--output", default= f"HOURLY_JSON/NEWS_FEEDS_{timestamp}.json", 
                        help="Path to write raw JSON.")
