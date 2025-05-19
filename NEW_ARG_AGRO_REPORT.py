@@ -106,7 +106,7 @@ def parse_args():
                        help="How many days back to include (default 1).")
     group.add_argument("--since-hours", type=int,
                        help="How many hours back to include (overrides --since-days).")
-    p.add_argument("--output", default= f"RSS_Hourly_JSON\NEWS_FEEDS_{timestamp}.json", 
+    p.add_argument("--output", default= f"HOURLY_JSON\NEWS_FEEDS_{timestamp}.json", 
                        help="Path to write raw JSON.")
 
     return p.parse_args()
