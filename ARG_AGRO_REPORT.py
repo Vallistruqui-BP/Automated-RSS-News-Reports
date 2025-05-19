@@ -59,6 +59,8 @@ KEYWORDS = [
 # AGROVEDAD: Nose
 # PERFIL: https://www.perfil.com/canales-rss
 # INFOBAE: https://www.infobae.com/arc/outboundfeeds/rss/
+# SEED WORLD: Nose (https://www.seedworld.com/latam/)
+# SEED TODAY: Nose (https://www.seedtoday.com/)
 
 # SETTINGS -----------------------------------------
 
