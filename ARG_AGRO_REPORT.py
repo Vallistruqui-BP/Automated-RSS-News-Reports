@@ -60,7 +60,7 @@ KEYWORDS = [
 # PERFIL: https://www.perfil.com/canales-rss
 # INFOBAE: https://www.infobae.com/arc/outboundfeeds/rss/
 # SEED WORLD: Nose (https://www.seedworld.com/latam/)
-# SEED TODAY: Nose (https://www.seedtoday.com/)
+# SEED TODAY: https://www.seedtoday.com/rss.xml
 
 # SETTINGS -----------------------------------------
 
@@ -121,7 +121,9 @@ RSS_FEEDS = [
     "https://www.perfil.com/rss/agro",
     "https://www.perfil.com/rss/autos",
 # INFOBAE
-    "https://www.infobae.com/arc/outboundfeeds/rss/"
+    "https://www.infobae.com/arc/outboundfeeds/rss/",
+# SEED TODAY
+    "https://www.seedtoday.com/rss.xml"
 ]
 
 # FUNCTIONS -----------------------------------------
