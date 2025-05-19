@@ -35,4 +35,3 @@ jobs:
           RECIPIENT_EMAIL:  ${{ secrets.RECIPIENT_EMAIL }}
         run: |
           python summary_and_email.py raw/
-
