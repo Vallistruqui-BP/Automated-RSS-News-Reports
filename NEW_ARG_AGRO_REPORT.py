@@ -95,6 +95,9 @@ def normalize_text(text: str) -> str:
     nk = unicodedata.normalize('NFKD', text)
     return nk.encode('ascii', 'ignore').decode('ascii').lower()
 
+timestamp = datetime.now().strftime("%Y_%m_%d__%H_%M")
+
+
 def parse_args():
     p = argparse.ArgumentParser(
         description="Fetch multiple RSS feeds, filter by keywords & date, emit JSON."
@@ -104,7 +107,7 @@ def parse_args():
                        help="How many days back to include (default 1).")
     group.add_argument("--since-hours", type=float,
                        help="How many hours back to include (overrides --since-days).")
-    p.add_argument("--output", default= "HOURLY_JSON/news_hourly.json", 
+    p.add_argument("--output", default= f"RSS_FEEDS_{timestamp}.json", 
                        help="Path to write raw JSON.")
 
     return p.parse_args()
