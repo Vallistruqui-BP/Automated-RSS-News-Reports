@@ -26,7 +26,7 @@ jobs:
 
       - name: Run hourly scraper
         run: |
-          python ARG_AGRO_REPORT.py \
+          python NEW_ARG_AGRO_REPORT.py \
             --feed-url https://example.com/my-specific-feed.xml \
             --since-hours 1 \
             --output raw_${{ github.run_number }}.json
