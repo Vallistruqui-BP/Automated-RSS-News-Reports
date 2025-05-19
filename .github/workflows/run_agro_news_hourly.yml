@@ -2,8 +2,7 @@ name: Run Agro News Bot (Hourly)
 
 on:
   schedule:
-    # every hour on the hour
-    - cron: '0 * * * *'
+    - cron: '0 * * * *'   # ⏰ Every hour on the hour
   workflow_dispatch:
 
 jobs:
@@ -14,7 +13,8 @@ jobs:
       SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
       RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -24,14 +24,14 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Run scraper against single feed
+      - name: Run hourly scraper
         run: |
           python NEW_ARG_AGRO_REPORT.py \
             --feed-url https://example.com/my-specific-feed.xml \
             --since-hours 1 \
             --output raw_${{ github.run_number }}.json
 
-      - name: Upload raw output
+      - name: Upload raw results
         uses: actions/upload-artifact@v3
         with:
           name: agro-hourly-raw-${{ github.run_number }}
