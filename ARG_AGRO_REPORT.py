@@ -64,7 +64,7 @@ KEYWORDS = [
 
 # SETTINGS -----------------------------------------
 
-DAYS_BACK = 2  # 🔵 How many days back to search (1 = yesterday only, 2 = last two days, etc.)
+DAYS_BACK = 1  # 🔵 How many days back to search (1 = yesterday only, 2 = last two days, etc.)
 
 
 RSS_FEEDS = [
