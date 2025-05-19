@@ -2,16 +2,16 @@ name: Run Agro News Bot (Hourly)
 
 on:
   schedule:
-    - cron: '0 * * * *'   # ⏰ Every hour on the hour
+    - cron: '0 * * * *'    # Every hour on the hour
   workflow_dispatch:
 
 jobs:
   run:
     runs-on: ubuntu-latest
     env:
-      SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
-      SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
-      RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
+      SENDER_EMAIL:     ${{ secrets.SENDER_EMAIL }}
+      SENDER_PASSWORD:  ${{ secrets.SENDER_PASSWORD }}
+      RECIPIENT_EMAIL:  ${{ secrets.RECIPIENT_EMAIL }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -26,7 +26,7 @@ jobs:
 
       - name: Run hourly scraper
         run: |
-          python NEW_ARG_AGRO_REPORT.py \
+          python ARG_AGRO_REPORT.py \
             --feed-url https://example.com/my-specific-feed.xml \
             --since-hours 1 \
             --output raw_${{ github.run_number }}.json
@@ -37,3 +37,4 @@ jobs:
           name: agro-hourly-raw-${{ github.run_number }}
           path: raw_*.json
           retention-days: 1
+
