@@ -10,25 +10,55 @@ import requests
 import zipfile
 import io
 
-token = "GITHUB_TOKEN_O_PERSONAL_ACCESS_TOKEN"
-repo = "usuario/repositorio"
+# Definir variable de entorno donde estará el token (puede ser GITHUB_TOKEN o PAT_TOKEN)
+token = os.getenv("GITHUB_TOKEN") or os.getenv("PAT_TOKEN")
+if not token:
+    print("❌ Missing GitHub token. Set GITHUB_TOKEN or PAT_TOKEN environment variable.", file=sys.stderr)
+    sys.exit(1)
+
+repo = "Vallistruqui-BP/Automated-RSS-News-Reports"
 headers = {"Authorization": f"token {token}"}
 
 artifacts_url = f"https://api.github.com/repos/{repo}/actions/artifacts"
-response = requests.get(artifacts_url, headers=headers)
-data = response.json()
 
-for artifact in data['artifacts']:
-    download_url = artifact['archive_download_url']
-    r = requests.get(download_url, headers=headers)
-    z = zipfile.ZipFile(io.BytesIO(r.content))
-    z.extractall("artifacts_json")
+# Opcional: directorio destino para extraer artifacts, puede pasarse como parámetro
+artifact_dir = sys.argv[1] if len(sys.argv) > 1 else "artifacts_json"
+
+def download_artifacts():
+    print(f"🔍 Fetching artifact list from {artifacts_url} ...")
+    response = requests.get(artifacts_url, headers=headers)
+    if response.status_code != 200:
+        print(f"❌ Failed to get artifacts list: {response.status_code} {response.text}", file=sys.stderr)
+        sys.exit(1)
+    data = response.json()
+
+    if not data.get('artifacts'):
+        print("ℹ️ No artifacts found.")
+        return
+
+    os.makedirs(artifact_dir, exist_ok=True)
+
+    for artifact in data['artifacts']:
+        download_url = artifact['archive_download_url']
+        print(f"⬇️ Downloading artifact '{artifact['name']}' ...")
+        r = requests.get(download_url, headers=headers)
+        if r.status_code != 200:
+            print(f"❌ Failed to download artifact {artifact['name']}: {r.status_code}", file=sys.stderr)
+            continue
+        z = zipfile.ZipFile(io.BytesIO(r.content))
+        z.extractall(artifact_dir)
+        print(f"✅ Extracted to {artifact_dir}")
 
 def load_and_merge(input_dir):
     seen = set()
     merged = {}
     for path in glob.glob(f"{input_dir}/RSS_FEEDS_*.json"):
-        data = json.load(open(path, encoding="utf-8"))
+        try:
+            with open(path, encoding="utf-8") as f:
+                data = json.load(f)
+        except Exception as e:
+            print(f"⚠️ Failed to load {path}: {e}", file=sys.stderr)
+            continue
         for source, articles in data.items():
             merged.setdefault(source, [])
             for art in articles:
@@ -43,7 +73,6 @@ def build_email_body(merged, days_desc="last period"):
     body += f"<p>🗓️ Noticias de {days_desc} (mail generado: {datetime.now().strftime('%d/%m/%Y %H:%M')})</p>\n"
     for source, articles in merged.items():
         body += f"<h3>🔵 {source}</h3><ul>\n"
-        # sort by published
         articles.sort(key=lambda x: x["published"])
         for art in articles:
             dt = datetime.fromisoformat(art["published"]).strftime("%d/%m %H:%M")
@@ -73,10 +102,11 @@ def send_email(html_body, subject):
     print("✅ Summary email sent!")
 
 def main():
-    ARTIFACT_DIR = sys.argv[1] if len(sys.argv)>1 else "."
-    merged = load_and_merge(ARTIFACT_DIR)
+    print("🚀 Starting artifact download and email sending process...")
+    download_artifacts()
+    merged = load_and_merge(artifact_dir)
     if not merged:
-        print("ℹ️  No new items to send.")
+        print("ℹ️ No new news items to send.")
         return
     body = build_email_body(merged)
     subject = f"🌾 Agro Digest {datetime.now().strftime('%d/%m/%Y')}"
