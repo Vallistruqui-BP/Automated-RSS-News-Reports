@@ -8,11 +8,6 @@ import time
 import unicodedata
 from datetime import datetime, timedelta
 
-# Email settings from GitHub Secrets
-SENDER_EMAIL = "vallarinopedro@gmail.com"
-SENDER_PASSWORD = "pept rkfg upfj tcyi"
-RECIPIENT_EMAIL = "vallarinopedro@gmail.com"
-
 KEYWORDS = [
     "maiz",
     "sorgo",
@@ -96,7 +91,6 @@ def normalize_text(text: str) -> str:
     return nk.encode('ascii', 'ignore').decode('ascii').lower()
 
 timestamp = datetime.now().strftime("%Y_%m_%d__%H_%M")
-
 
 def parse_args():
     p = argparse.ArgumentParser(
