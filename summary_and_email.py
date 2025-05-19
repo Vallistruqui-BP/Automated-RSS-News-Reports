@@ -102,8 +102,7 @@ def send_email(html_body, subject):
     print("✅ Summary email sent!")
 
 def main():
-    print("🚀 Starting artifact download and email sending process...")
-    download_artifacts()
+    artifact_dir = sys.argv[1] if len(sys.argv) > 1 else "."
     merged = load_and_merge(artifact_dir)
     if not merged:
         print("ℹ️ No new news items to send.")
@@ -111,6 +110,6 @@ def main():
     body = build_email_body(merged)
     subject = f"🌾 Agro Digest {datetime.now().strftime('%d/%m/%Y')}"
     send_email(body, subject)
-
+    
 if __name__ == "__main__":
     main()
