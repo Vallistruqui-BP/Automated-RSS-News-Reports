@@ -125,7 +125,7 @@ def main():
         start_date = now - timedelta(days=args.since_days)
     end_date = now
 
-#    print(f"⏱ Filtering entries from {start_date.isoformat()} to {end_date.isoformat()}")
+    print(f"⏱ Filtering entries from {start_date.isoformat()} to {end_date.isoformat()}")
 
     grouped_news = {}
 
