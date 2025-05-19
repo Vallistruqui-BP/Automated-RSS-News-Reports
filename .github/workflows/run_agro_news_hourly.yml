@@ -30,8 +30,11 @@ jobs:
       - name: Run script
         run: python NEW_ARG_AGRO_REPORT.py --since-hours 1.5 #-- since-days 1
 
+      - name: Set timestamp env var
+        run: echo "TIMESTAMP=$(date +'%Y_%m_%d__%H_%M')" >> $GITHUB_ENV
+
       - name: Upload JSON files as artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: news-json-files
-          path: HOURLY_JSON/*.json
+          name: news-json-${{ env.TIMESTAMP }}
+          path: HOURLY_JSON/news_hourly.json
