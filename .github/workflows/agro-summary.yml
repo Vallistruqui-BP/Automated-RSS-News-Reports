@@ -1,0 +1,23 @@
+name: Daily Agro Summary
+
+on:
+  schedule:
+    - cron: '59 2 * * *'   # ⏰ Every day at 23:59 Argentina (02:59 UTC)
+  workflow_dispatch:
+
+jobs:
+  summarize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download hourly artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: raw/
+
+      - name: Merge, dedupe & send email
+        env:
+          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
+          SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
+          RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
+        run: |
+          python summary_and_email.py raw/
