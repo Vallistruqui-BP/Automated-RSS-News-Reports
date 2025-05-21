@@ -1,4 +1,4 @@
-name: Run Agro News Bot
+name: Run Agro News Bot (daily)
 
 on:
   schedule:
