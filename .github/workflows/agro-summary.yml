@@ -30,7 +30,7 @@ jobs:
 
       - name: Merge, dedupe & send email
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
           SENDER_EMAIL:     ${{ secrets.SENDER_EMAIL }}
           SENDER_PASSWORD:  ${{ secrets.SENDER_PASSWORD }}
           RECIPIENT_EMAIL:  ${{ secrets.RECIPIENT_EMAIL }}
