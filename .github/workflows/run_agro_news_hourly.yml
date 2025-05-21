@@ -28,7 +28,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run script
-        run: python NEW_ARG_AGRO_REPORT.py --since-hours 1.5 #-- since-days 1
+        run: python hourly_agro_scraper.py --since-hours 1.5 #-- since-days 1
 
       - name: Upload JSON files as artifacts
         uses: actions/upload-artifact@v4

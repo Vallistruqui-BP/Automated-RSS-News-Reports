@@ -28,4 +28,4 @@ jobs:
         run: pip install -r requirements.txt  # Point to the root directory
 
       - name: Run script
-        run: python ARG_AGRO_REPORT.py
+        run: python daily_agro_scraper.py
