@@ -6,7 +6,7 @@ REPO = 'Automated-RSS-News-Reports'
 API_URL = f'https://api.github.com/repos/{OWNER}/{REPO}/actions/artifacts'
 
 def list_artifacts():
-    GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
+    GITHUB_TOKEN = os.getenv('MY_GITHUB_TOKEN')
     if not GITHUB_TOKEN:
         raise ValueError("GITHUB_TOKEN environment variable not set.")
 
