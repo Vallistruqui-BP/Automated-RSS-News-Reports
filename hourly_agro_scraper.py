@@ -8,6 +8,7 @@ import time
 import unicodedata
 from datetime import datetime, timedelta
 
+# You can change them to suit your news coverage preference
 KEYWORDS = [
     "maiz",
     "sorgo",
@@ -27,6 +28,7 @@ KEYWORDS = [
     "bayer"
 ]
 
+# You can add as many RSS links as you want provided that said news coverage site has RSS links available
 RSS_FEEDS = [
 # LA NACION
     "https://www.lanacion.com.ar/arc/outboundfeeds/rss/",
