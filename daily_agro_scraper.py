@@ -27,8 +27,6 @@ KEYWORDS = [
     "sorgo",
     "girasol",
     "trigo",
-    "importaciones",
-    "importacion",
     "bioceres",
     "remingtom",
     "agidea",
