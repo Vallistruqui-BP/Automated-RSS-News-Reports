@@ -25,31 +25,48 @@ artifact_dir = sys.argv[1] if len(sys.argv) > 1 else "artifacts_json"
 
 def download_artifacts():
     print(f"🔍 Fetching artifact list from {repo} ...")
-    response = requests.get(f"https://api.github.com/repos/{repo}/actions/artifacts", headers=headers)
-    if response.status_code != 200:
-        print(f"❌ Failed to get artifacts: {response.status_code} {response.text}", file=sys.stderr)
-        sys.exit(1)
-    data = response.json()
-
-    if not data.get('artifacts'):
-        print("ℹ️ No artifacts found.")
-        return False
+    page = 1
+    per_page = 100
+    total_downloaded = 0
 
     os.makedirs(artifact_dir, exist_ok=True)
 
-    for artifact in data['artifacts']:
-        download_url = artifact['archive_download_url']
-        print(f"⬇️ Downloading artifact: {artifact['name']}")
-        r = requests.get(download_url, headers=headers)
-        if r.status_code != 200:
-            print(f"❌ Failed to download {artifact['name']}: {r.status_code}", file=sys.stderr)
-            continue
-        z = zipfile.ZipFile(io.BytesIO(r.content))
-        z.extractall(artifact_dir)
-        print(f"✅ Extracted to {artifact_dir}")
+    while True:
+        url = f"https://api.github.com/repos/{repo}/actions/artifacts"
+        params = {"page": page, "per_page": per_page}
+        response = requests.get(url, headers=headers, params=params)
+        if response.status_code != 200:
+            print(f"❌ Failed to get artifacts page {page}: {response.status_code} {response.text}", file=sys.stderr)
+            sys.exit(1)
 
-    return True
+        data = response.json()
+        artifacts = data.get('artifacts', [])
+        if not artifacts:
+            if page == 1:
+                print("ℹ️ No artifacts found.")
+            break
 
+        for artifact in artifacts:
+            download_url = artifact['archive_download_url']
+            name = artifact['name']
+            print(f"⬇️ Downloading artifact: {name}")
+            r = requests.get(download_url, headers=headers)
+            if r.status_code != 200:
+                print(f"❌ Failed to download {name}: {r.status_code}", file=sys.stderr)
+                continue
+            z = zipfile.ZipFile(io.BytesIO(r.content))
+            z.extractall(artifact_dir)
+            print(f"✅ Extracted to {artifact_dir}")
+            total_downloaded += 1
+
+        if len(artifacts) < per_page:
+            break
+        page += 1
+
+    print(f"📥 Total artifacts downloaded and extracted: {total_downloaded}")
+    return total_downloaded > 0
+
+# El resto de funciones sin cambios...
 def load_and_merge(input_dir):
     seen = set()
     merged = {}
@@ -102,11 +119,6 @@ def send_email(html_body, subject):
         s.send_message(msg)
     print("✅ Summary email sent!")
 
-""" def delete_artifacts_folder():
-    if os.path.exists(artifact_dir):
-        shutil.rmtree(artifact_dir)
-        print(f"🧹 Deleted folder {artifact_dir}")
- """
 def main():
     print("🚀 Starting process...")
     success = download_artifacts()
@@ -117,13 +129,11 @@ def main():
     merged = load_and_merge(artifact_dir)
     if not merged:
         print("ℹ️ No new news items to send.")
-#        delete_artifacts_folder()
         return
 
     body = build_email_body(merged)
     subject = f"🌾 Agro Digest {datetime.now().strftime('%d/%m/%Y')}"
     send_email(body, subject)
-#    delete_artifacts_folder()
 
 if __name__ == "__main__":
     main()
