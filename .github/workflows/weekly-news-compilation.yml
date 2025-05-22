@@ -23,11 +23,6 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Download all raw JSON artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: raw/
-
       - name: Merge, dedupe & send email
         env:
           GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
