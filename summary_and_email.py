@@ -1,3 +1,5 @@
+repo = "Vallistruqui-BP/Automated-RSS-News-Reports"
+
 def download_artifacts():
     print(f"🔍 Fetching artifact list from {repo} ...")
     page = 1
