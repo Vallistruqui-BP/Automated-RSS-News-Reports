@@ -10,23 +10,54 @@ from datetime import datetime, timedelta
 
 # You can change them to suit your news coverage preference
 KEYWORDS = [
-    "maiz",
-    "sorgo",
-    "girasol",
-    "trigo",
-    "importaciones",
-    "importacion",
-    "bioceres",
-    "remingtom",
-    "agidea",
-    "corteva",
-    "syngenta",
-    "gdm",
-    "los grobo",
-    "limagrain",
-    "rizobacter",
-    "bayer"
+    # GAMING
+    "gaming",
+    "videojuegos",
+    "gamer",
+    "eSports",
+    "torneos gaming",
+    "streamers",
+    "Twitch",
+    "Steam",
+    "PlayStation",
+    "Xbox",
+    "Nintendo",
+    "comunidad gamer",
+    "juegos online",
+
+    # GAMBLING
+    "apuestas online",
+    "casas de apuestas",
+    "casino online",
+    "juegos de azar",
+    "tragamonedas",
+    "apuestas deportivas",
+    "criptocasinos",
+    "betting",
+    "Codere",
+    "Bplay",
+    "Bet365",
+    "juego legal",
+    "Lotería Nacional",
+    "regulación apuestas",
+
+    # ENTREPRENEURSHIP
+    "emprendedores",
+    "startups",
+    "emprender",
+    "aceleradoras",
+    "incubadoras",
+    "rondas de inversión",
+    "inversión ángel",
+    "unicornio",
+    "fintech",
+    "capital de riesgo",
+    "economía del conocimiento",
+    "negocio digital",
+    "startup tecnológica",
+    "innovación"
 ]
+
 
 # You can add as many RSS links as you want provided that said news coverage site has RSS links available
 RSS_FEEDS = [
