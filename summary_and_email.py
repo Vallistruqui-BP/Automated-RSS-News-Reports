@@ -29,7 +29,7 @@ artifact_dir = "artifacts_json"  # Default artifact directory
 def fetch_and_process_artifacts():
     total_count = 0
     page = 1
-    per_page = 100
+    per_page = 1000
 
     os.makedirs(artifact_dir, exist_ok=True)
 
