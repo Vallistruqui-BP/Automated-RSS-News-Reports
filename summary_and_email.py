@@ -11,68 +11,69 @@ import zipfile
 import io
 import shutil
 
-# Cargar token desde variable de entorno
+OWNER = 'Vallistruqui-BP'
+REPO = 'Automated-RSS-News-Reports'
+API_URL = f'https://api.github.com/repos/{OWNER}/{REPO}/actions/artifacts'
+
+# Load token from environment variable
 token = os.getenv("MY_GITHUB_TOKEN") or os.getenv("GITHUB_TOKEN") or os.getenv("PAT_TOKEN")
 if not token:
     print("❌ Missing GitHub token. Set GITHUB_TOKEN or PAT_TOKEN environment variable.", file=sys.stderr)
     sys.exit(1)
 
-# Definir correctamente la variable repo
-repo = "Vallistruqui-BP/Automated-RSS-News-Reports"  # Asegúrate de definirla correctamente
+# Common headers
+headers = {"Authorization": f"token {token}", "Accept": "application/vnd.github+json"}
 
-headers = {"Authorization": f"token {token}"}
+artifact_dir = "artifacts_json"  # Default artifact directory
 
-# Directorio destino (por defecto)
-artifact_dir = sys.argv[1] if len(sys.argv) > 1 else "artifacts_json"
-
-def delete_artifacts_folder():
-    if os.path.exists(artifact_dir):
-        shutil.rmtree(artifact_dir)
-        print(f"🧹 Deleted folder {artifact_dir}")
-
-def download_artifacts():
-    print(f"🔍 Fetching artifact list from {repo} ...")
+def fetch_and_process_artifacts():
+    total_count = 0
     page = 1
     per_page = 100
-    total_downloaded = 0
 
     os.makedirs(artifact_dir, exist_ok=True)
 
     while True:
-        print(f"🔄 Fetching page {page}...")
-        url = f"https://api.github.com/repos/{repo}/actions/artifacts"
-        params = {"page": page, "per_page": per_page}
-        response = requests.get(url, headers=headers, params=params)
+        params = {'page': page, 'per_page': per_page}
+        response = requests.get(API_URL, headers=headers, params=params)
+
         if response.status_code != 200:
-            print(f"❌ Failed to get artifacts page {page}: {response.status_code} {response.text}", file=sys.stderr)
-            sys.exit(1)
+            print(f'❌ Error fetching artifacts: {response.status_code} {response.text}')
+            return
 
         data = response.json()
         artifacts = data.get('artifacts', [])
-        if not artifacts:
-            if page == 1:
-                print("ℹ️ No artifacts found.")
-            break
+        total_count += len(artifacts)
 
+        # Process each artifact (download and delete)
         for artifact in artifacts:
+            artifact_id = artifact['id']
+            artifact_name = artifact['name']
             download_url = artifact['archive_download_url']
-            name = artifact['name']
-            print(f"⬇️ Downloading artifact: {name}")
-            r = requests.get(download_url, headers=headers)
-            if r.status_code != 200:
-                print(f"❌ Failed to download {name}: {r.status_code}", file=sys.stderr)
-                continue
-            z = zipfile.ZipFile(io.BytesIO(r.content))
-            z.extractall(artifact_dir)
-            print(f"✅ Extracted to {artifact_dir}")
-            total_downloaded += 1
+
+            # Download artifact
+            print(f"⬇️ Downloading artifact: {artifact_name}")
+            download_response = requests.get(download_url, headers=headers)
+            if download_response.status_code == 200:
+                with zipfile.ZipFile(io.BytesIO(download_response.content)) as z:
+                    z.extractall(artifact_dir)
+                print(f"✅ Extracted to {artifact_dir}")
+            else:
+                print(f"❌ Failed to download {artifact_name}: {download_response.status_code}")
+
+            # Delete artifact
+            delete_url = f"{API_URL}/{artifact_id}"
+            delete_response = requests.delete(delete_url, headers=headers)
+            if delete_response.status_code == 204:
+                print(f"✅ Successfully deleted artifact: {artifact_name}")
+            else:
+                print(f"❌ Failed to delete artifact: {artifact_name} - {delete_response.status_code} {delete_response.text}")
 
         if len(artifacts) < per_page:
             break
         page += 1
 
-    print(f"📥 Total artifacts downloaded and extracted: {total_downloaded}")
-    return total_downloaded > 0
+    print(f"Total artifacts processed and deleted: {total_count}")
 
 def load_and_merge(input_dir):
     seen = set()
@@ -135,11 +136,8 @@ def send_email(html_body, subject):
 def main():
     print("🚀 Starting process...")
 
-    # Download artifacts
-    success = download_artifacts()
-    if not success:
-        print("⛔ No artifacts to process.")
-        return
+    # Download and delete artifacts
+    fetch_and_process_artifacts()
 
     # Load and merge data
     merged = load_and_merge(artifact_dir)
@@ -151,9 +149,6 @@ def main():
     body = build_email_body(merged)
     subject = f"🌾 Agro Digest {datetime.now().strftime('%d/%m/%Y')}"
     send_email(body, subject)
-
-    # After successful email sending, delete the artifacts folder
-    delete_artifacts_folder()
 
 if __name__ == "__main__":
     main()
