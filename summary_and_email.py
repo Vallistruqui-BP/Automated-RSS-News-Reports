@@ -1,4 +1,34 @@
-repo = "Vallistruqui-BP/Automated-RSS-News-Reports"
+#!/usr/bin/env python3
+import glob
+import json
+import os
+import smtplib
+import sys
+from datetime import datetime
+from email.mime.text import MIMEText
+import requests
+import zipfile
+import io
+import shutil
+
+# Cargar token desde variable de entorno
+token = os.getenv("MY_GITHUB_TOKEN") or os.getenv("GITHUB_TOKEN") or os.getenv("PAT_TOKEN")
+if not token:
+    print("❌ Missing GitHub token. Set GITHUB_TOKEN or PAT_TOKEN environment variable.", file=sys.stderr)
+    sys.exit(1)
+
+# Definir correctamente la variable repo
+repo = "Vallistruqui-BP/Automated-RSS-News-Reports"  # Asegúrate de definirla correctamente
+
+headers = {"Authorization": f"token {token}"}
+
+# Directorio destino (por defecto)
+artifact_dir = sys.argv[1] if len(sys.argv) > 1 else "artifacts_json"
+
+def delete_artifacts_folder():
+    if os.path.exists(artifact_dir):
+        shutil.rmtree(artifact_dir)
+        print(f"🧹 Deleted folder {artifact_dir}")
 
 def download_artifacts():
     print(f"🔍 Fetching artifact list from {repo} ...")
@@ -65,6 +95,19 @@ def load_and_merge(input_dir):
     print(f"🔄 Merged {len(merged)} sources.")
     return merged
 
+def build_email_body(merged, days_desc="last period"):
+    body = "<h2>🌾 Resumen Agro Consolidado 🌾</h2>\n"
+    body += f"<p>🗓️ Noticias de {days_desc} (generado: {datetime.now().strftime('%d/%m/%Y %H:%M')})</p>\n"
+    for source, articles in merged.items():
+        body += f"<h3>🔵 {source}</h3><ul>\n"
+        articles.sort(key=lambda x: x["published"])
+        for art in articles:
+            dt = datetime.fromisoformat(art["published"]).strftime("%d/%m %H:%M")
+            body += f"<li>📰 [{dt}] <a href='{art['link']}' target='_blank'>{art['title']}</a></li>\n"
+        body += "</ul>\n"
+    body += "<hr><p style='font-size:small;color:gray;'>Email generado automáticamente</p>"
+    return body
+
 def send_email(html_body, subject):
     SENDER = os.getenv("SENDER_EMAIL")
     PASS   = os.getenv("SENDER_PASSWORD")
@@ -91,7 +134,7 @@ def send_email(html_body, subject):
 
 def main():
     print("🚀 Starting process...")
-    
+
     # Download artifacts
     success = download_artifacts()
     if not success:
