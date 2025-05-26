@@ -108,7 +108,7 @@ def main():
     send_email(body, subject)
 
     # After successful email sending, delete the artifacts folder
-    delete_artifacts_folder()
+    #delete_artifacts_folder()
 
 if __name__ == "__main__":
     main()
