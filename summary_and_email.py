@@ -97,7 +97,7 @@ def load_and_merge(input_dir):
     return merged
 
 def build_email_body(merged, days_desc="last period"):
-    body = "<h2>🌾 Resumen Agro Consolidado 🌾</h2>\n"
+    body = "<h2> Resumen Diario Noticias</h2>\n"
     body += f"<p>🗓️ Noticias de {days_desc} (generado: {datetime.now().strftime('%d/%m/%Y %H:%M')})</p>\n"
     for source, articles in merged.items():
         body += f"<h3>🔵 {source}</h3><ul>\n"
