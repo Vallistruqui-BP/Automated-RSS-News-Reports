@@ -91,15 +91,15 @@ RSS_FEEDS = [
     "https://www.clarin.com/rss/viajes/",
     "https://www.clarin.com/rss/arq/",
 # INFOCAMPO
-    "https://www.infocampo.com.ar/feed/",
+#    "https://www.infocampo.com.ar/feed/",
 # BICHOS DE CAMPO
-    "https://www.infocampo.com.ar/feed/",
+#    "https://www.infocampo.com.ar/feed/",
 # VALOR SOJA
-    "https://www.valorsoja.com/feed/",
+#    "https://www.valorsoja.com/feed/",
 # TODO AGRO
-    "https://www.todoagro.com.ar/feed/",
+#    "https://www.todoagro.com.ar/feed/",
 # SUPER CAMPO
-    "https://supercampo.perfil.com/feed/",
+#    "https://supercampo.perfil.com/feed/",
 # PERFIL
     "https://www.perfil.com/feed",
     "https://www.perfil.com/rss/politica",
@@ -116,7 +116,7 @@ RSS_FEEDS = [
 # INFOBAE
     "https://www.infobae.com/arc/outboundfeeds/rss/",
 # SEED TODAY
-    "https://www.seedtoday.com/rss.xml"
+#    "https://www.seedtoday.com/rss.xml"
 ]
 
 def normalize_text(text: str) -> str:
