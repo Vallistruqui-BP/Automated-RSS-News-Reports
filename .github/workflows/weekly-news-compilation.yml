@@ -1,8 +1,9 @@
-name: Weekly News Summary
+name: Daily News Summary
 
 on:
   schedule:
-    - cron: '5 12 * * 1'  # ⏰ Every Monday at 12:05 UTC (9:05 AM Argentina)
+    - cron: '5 12 * * *'  # ⏰ Every day at 12:05 UTC (9:05 AM Argentina)
+#    - cron: '5 12 * * 1'  # ⏰ Every Monday at 12:05 UTC (9:05 AM Argentina)
   workflow_dispatch:
 
 jobs:
