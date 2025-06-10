@@ -147,7 +147,7 @@ def main():
 
     # Build email and send it
     body = build_email_body(merged)
-    subject = f"🌾 Agro Digest {datetime.now().strftime('%d/%m/%Y')}"
+    subject = f"Daily Interests {datetime.now().strftime('%d/%m/%Y')}"
     send_email(body, subject)
 
 if __name__ == "__main__":
