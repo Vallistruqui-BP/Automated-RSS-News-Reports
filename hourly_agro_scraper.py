@@ -24,23 +24,7 @@ KEYWORDS = [
     "Nintendo",
     "comunidad gamer",
     "juegos online",
-
-    # GAMBLING
-    "apuestas online",
-    "casas de apuestas",
-    "casino online",
-    "juegos de azar",
-    "tragamonedas",
-    "apuestas deportivas",
-    "criptocasinos",
-    "betting",
-    "Codere",
-    "Bplay",
-    "Bet365",
-    "juego legal",
-    "Lotería Nacional",
-    "regulación apuestas",
-
+    
     # ENTREPRENEURSHIP
     "emprendedores",
     "startups",
