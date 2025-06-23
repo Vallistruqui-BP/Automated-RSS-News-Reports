@@ -46,59 +46,59 @@ KEYWORDS = [
 # You can add as many RSS links as you want provided that said news coverage site has RSS links available
 RSS_FEEDS = [
 # LA NACION
-    "https://www.lanacion.com.ar/arc/outboundfeeds/rss/"#,
-# # CLARIN
-#     "https://www.clarin.com/rss/mundo/",
-#     "https://www.clarin.com/rss/sociedad/",
-#     "https://www.clarin.com/rss/policiales/",
-#     "https://www.clarin.com/rss/ciudades/",
-#     "https://www.clarin.com/rss/opinion/",
-#     "https://www.clarin.com/rss/cartas_al_pais/",
-#     "https://www.clarin.com/rss/cultura/",
-#     "https://www.clarin.com/rss/rural/",
-#     "https://www.clarin.com/rss/economia/",
-#     "https://www.clarin.com/rss/tecnologia/",
-#     "https://www.clarin.com/rss/internacional/",
-#     "https://www.clarin.com/rss/revista-enie/",
-#     "https://www.clarin.com/rss/viva/",
-#     "https://www.clarin.com/rss/br/",
-#     "https://www.clarin.com/rss/deportes/",
-#     "https://www.clarin.com/rss/espectaculos/tv/",
-#     "https://www.clarin.com/rss/espectaculos/cine/",
-#     "https://www.clarin.com/rss/espectaculos/musica/",
-#     "https://www.clarin.com/rss/espectaculos/teatro/",
-#     "https://www.clarin.com/rss/espectaculos/",
-#     "https://www.clarin.com/rss/autos/",
-#     "https://www.clarin.com/rss/buena-vida/",
-#     "https://www.clarin.com/rss/viajes/",
-#     "https://www.clarin.com/rss/arq/",
-# # INFOCAMPO
-# #    "https://www.infocampo.com.ar/feed/",
-# # BICHOS DE CAMPO
-# #    "https://www.infocampo.com.ar/feed/",
-# # VALOR SOJA
-# #    "https://www.valorsoja.com/feed/",
-# # TODO AGRO
-# #    "https://www.todoagro.com.ar/feed/",
-# # SUPER CAMPO
-# #    "https://supercampo.perfil.com/feed/",
-# # PERFIL
-#     "https://www.perfil.com/feed",
-#     "https://www.perfil.com/rss/politica",
-#     "https://www.perfil.com/rss/economia",
-#     "https://www.perfil.com/rss/sociedad",
-#     "https://www.perfil.com/rss/deportes",
-#     "https://www.perfil.com/rss/internacional",
-#     "https://www.perfil.com/rss/espectaculos",
-#     "https://www.perfil.com/rss/cultura",
-#     "https://www.perfil.com/rss/tecnologia",
-#     "https://www.perfil.com/rss/salud",
-#     "https://www.perfil.com/rss/agro",
-#     "https://www.perfil.com/rss/autos",
-# # INFOBAE
-#     "https://www.infobae.com/arc/outboundfeeds/rss/",
-# # SEED TODAY
-# #    "https://www.seedtoday.com/rss.xml"
+    "https://www.lanacion.com.ar/arc/outboundfeeds/rss/",
+# CLARIN
+    "https://www.clarin.com/rss/mundo/",
+    "https://www.clarin.com/rss/sociedad/",
+    "https://www.clarin.com/rss/policiales/",
+    "https://www.clarin.com/rss/ciudades/",
+    "https://www.clarin.com/rss/opinion/",
+    "https://www.clarin.com/rss/cartas_al_pais/",
+    "https://www.clarin.com/rss/cultura/",
+    "https://www.clarin.com/rss/rural/",
+    "https://www.clarin.com/rss/economia/",
+    "https://www.clarin.com/rss/tecnologia/",
+    "https://www.clarin.com/rss/internacional/",
+    "https://www.clarin.com/rss/revista-enie/",
+    "https://www.clarin.com/rss/viva/",
+    "https://www.clarin.com/rss/br/",
+    "https://www.clarin.com/rss/deportes/",
+    "https://www.clarin.com/rss/espectaculos/tv/",
+    "https://www.clarin.com/rss/espectaculos/cine/",
+    "https://www.clarin.com/rss/espectaculos/musica/",
+    "https://www.clarin.com/rss/espectaculos/teatro/",
+    "https://www.clarin.com/rss/espectaculos/",
+    "https://www.clarin.com/rss/autos/",
+    "https://www.clarin.com/rss/buena-vida/",
+    "https://www.clarin.com/rss/viajes/",
+    "https://www.clarin.com/rss/arq/",
+# INFOCAMPO
+#    "https://www.infocampo.com.ar/feed/",
+# BICHOS DE CAMPO
+#    "https://www.infocampo.com.ar/feed/",
+# VALOR SOJA
+#    "https://www.valorsoja.com/feed/",
+# TODO AGRO
+#    "https://www.todoagro.com.ar/feed/",
+# SUPER CAMPO
+#    "https://supercampo.perfil.com/feed/",
+# PERFIL
+    "https://www.perfil.com/feed",
+    "https://www.perfil.com/rss/politica",
+    "https://www.perfil.com/rss/economia",
+    "https://www.perfil.com/rss/sociedad",
+    "https://www.perfil.com/rss/deportes",
+    "https://www.perfil.com/rss/internacional",
+    "https://www.perfil.com/rss/espectaculos",
+    "https://www.perfil.com/rss/cultura",
+    "https://www.perfil.com/rss/tecnologia",
+    "https://www.perfil.com/rss/salud",
+    "https://www.perfil.com/rss/agro",
+    "https://www.perfil.com/rss/autos",
+# INFOBAE
+    "https://www.infobae.com/arc/outboundfeeds/rss/"
+# SEED TODAY
+#    "https://www.seedtoday.com/rss.xml"
 ]
 
 def normalize_text(text: str) -> str:
