@@ -1,4 +1,4 @@
-name: Run Agro News Bot (hourly)
+name: Scrape News Bot (hourly)
 
 on:
   schedule:
