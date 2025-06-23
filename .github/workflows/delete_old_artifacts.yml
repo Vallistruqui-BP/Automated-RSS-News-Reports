@@ -1,0 +1,10 @@
+- name: Delete old rss-feeds artifacts (pre-cleanup)
+  run: |
+    echo "Deleting previous rss-feeds artifacts..."
+    gh api repos/${{ github.repository }}/actions/artifacts --paginate \
+      -q '.artifacts[] | select(.name | startswith("rss-feeds-")) | .id' > artifact_ids_to_delete.txt
+
+    while read id; do
+      echo "Deleting artifact ID: $id"
+      gh api --method DELETE repos/${{ github.repository }}/actions/artifacts/$id
+    done < artifact_ids_to_delete.txt
