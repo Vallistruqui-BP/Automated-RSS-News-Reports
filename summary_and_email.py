@@ -61,19 +61,11 @@ def fetch_and_process_artifacts():
             else:
                 print(f"❌ Failed to download {artifact_name}: {download_response.status_code}")
 
-            # Delete artifact
-            delete_url = f"{API_URL}/{artifact_id}"
-            delete_response = requests.delete(delete_url, headers=headers)
-            if delete_response.status_code == 204:
-                print(f"✅ Successfully deleted artifact: {artifact_name}")
-            else:
-                print(f"❌ Failed to delete artifact: {artifact_name} - {delete_response.status_code} {delete_response.text}")
-
         if len(artifacts) < per_page:
             break
         page += 1
 
-    print(f"Total artifacts processed and deleted: {total_count}")
+    print(f"Total artifacts processed: {total_count}")
 
 def load_and_merge(input_dir):
     seen = set()
