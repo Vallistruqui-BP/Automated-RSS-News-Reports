@@ -173,9 +173,9 @@ def main():
                     "matched_keywords": matched_keywords  # <-- Add this line
                 })
             else:
-#                print(f"❌ NO MATCH: {title[:80]}...")
+                print(f"❌ NO MATCH: {title[:80]}...")
 
-#        print("")
+        print("")
 
     os.makedirs(os.path.dirname(args.output) or ".", exist_ok=True)
     with open(args.output, "w", encoding="utf-8") as f:
