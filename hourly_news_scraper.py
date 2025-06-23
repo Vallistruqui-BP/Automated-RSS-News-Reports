@@ -39,7 +39,9 @@ KEYWORDS = [
     "economía del conocimiento",
     "negocio digital",
     "startup tecnológica",
-    "innovación"
+    "innovación",
+
+    "importaciones" #Agregado
 ]
 
 
