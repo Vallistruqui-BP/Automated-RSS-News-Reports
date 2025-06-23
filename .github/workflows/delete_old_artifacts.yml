@@ -1,10 +1,25 @@
-- name: Delete old rss-feeds artifacts (pre-cleanup)
-  run: |
-    echo "Deleting previous rss-feeds artifacts..."
-    gh api repos/${{ github.repository }}/actions/artifacts --paginate \
-      -q '.artifacts[] | select(.name | startswith("rss-feeds-")) | .id' > artifact_ids_to_delete.txt
+name: Delete Old Artifacts
 
-    while read id; do
-      echo "Deleting artifact ID: $id"
-      gh api --method DELETE repos/${{ github.repository }}/actions/artifacts/$id
-    done < artifact_ids_to_delete.txt
+on:
+  workflow_dispatch:  # permite ejecutar este workflow manualmente desde la interfaz de GitHub
+
+jobs:
+  delete-artifacts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install GitHub CLI
+        run: sudo apt-get install gh -y
+
+      - name: Delete rss-feeds artifacts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Fetching artifact IDs for deletion..."
+          gh api repos/${{ github.repository }}/actions/artifacts --paginate \
+            -q '.artifacts[] | select(.name | startswith("rss-feeds-")) | .id' > artifact_ids.txt
+
+          echo "Deleting artifacts..."
+          while read id; do
+            echo "Deleting artifact ID: $id"
+            gh api --method DELETE repos/${{ github.repository }}/actions/artifacts/$id
+          done < artifact_ids.txt
