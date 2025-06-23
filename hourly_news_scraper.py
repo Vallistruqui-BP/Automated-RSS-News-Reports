@@ -139,11 +139,11 @@ def main():
             try:
                 published_time = datetime.fromtimestamp(time.mktime(entry.published_parsed))
             except AttributeError:
-                print("⚠️  Entrada sin fecha, se omite.")
+#                print("⚠️  Entrada sin fecha, se omite.")
                 continue
 
             if not (start_date <= published_time <= end_date):
-                print(f"⏩ {entry.get('title', '')[:60]}... fuera de rango de fecha ({published_time.isoformat()})")
+#                print(f"⏩ {entry.get('title', '')[:60]}... fuera de rango de fecha ({published_time.isoformat()})")
                 continue
 
             title = entry.get("title", "")
@@ -173,9 +173,9 @@ def main():
                     "matched_keywords": matched_keywords  # <-- Add this line
                 })
             else:
-                print(f"❌ NO MATCH: {title[:80]}...")
+#                print(f"❌ NO MATCH: {title[:80]}...")
 
-        print("")
+#        print("")
 
     os.makedirs(os.path.dirname(args.output) or ".", exist_ok=True)
     with open(args.output, "w", encoding="utf-8") as f:
