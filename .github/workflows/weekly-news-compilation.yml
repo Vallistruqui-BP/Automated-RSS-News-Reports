@@ -1,14 +1,19 @@
-name: Daily News Summary
+name: Weekly Agro Summary
 
 on:
   schedule:
-    - cron: '5 12 * * *'  # ⏰ Every day at 12:05 UTC (9:05 AM Argentina)
-#    - cron: '5 12 * * 1'  # ⏰ Every Monday at 12:05 UTC (9:05 AM Argentina)
+    - cron: '5 12 * * 1'  # ⏰ Every Monday at 12:05 UTC (9:05 AM Argentina)
   workflow_dispatch:
 
 jobs:
   summarize:
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
+      SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
+      RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -24,11 +29,34 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Merge, dedupe & send email
-        env:
-          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
-          SENDER_EMAIL:     ${{ secrets.SENDER_EMAIL }}
-          SENDER_PASSWORD:  ${{ secrets.SENDER_PASSWORD }}
-          RECIPIENT_EMAIL:  ${{ secrets.RECIPIENT_EMAIL }}
+      - name: Install GitHub CLI
+        run: sudo apt-get install gh -y
+
+      - name: List and download all rss-feeds artifacts
         run: |
-          python summary_and_email.py raw/
+          mkdir -p raw_zips raw
+          echo "Fetching artifact download URLs..."
+          gh api repos/${{ github.repository }}/actions/artifacts --paginate -q '.artifacts[] | select(.name | startswith("rss-feeds-")) | [.id, .archive_download_url] | @tsv' > urls.tsv
+
+          while IFS=$'\t' read -r id url; do
+            echo "Downloading artifact ID: $id"
+            curl -L -H "Authorization: token $GITHUB_TOKEN" "$url" --output raw_zips/$id.zip
+          done < urls.tsv
+
+          echo "Extracting artifacts..."
+          for zip in raw_zips/*.zip; do
+            unzip "$zip" -d raw
+          done
+
+      - name: Merge, dedupe & send email
+        run: python summary_and_email.py raw/
+
+      - name: Delete all rss-feeds artifacts
+        run: |
+          echo "Deleting rss-feeds artifacts..."
+          gh api repos/${{ github.repository }}/actions/artifacts --paginate -q '.artifacts[] | select(.name | startswith("rss-feeds-")) | .id' > artifact_ids.txt
+
+          while read id; do
+            echo "Deleting artifact ID: $id"
+            gh api --method DELETE repos/${{ github.repository }}/actions/artifacts/$id
+          done < artifact_ids.txt
