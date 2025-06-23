@@ -52,11 +52,18 @@ jobs:
       - name: Merge, dedupe & send email
         run: python summary_and_email.py raw/
 
-      - name: Delete all rss-feeds artifacts
-        run: |
-          echo "Deleting rss-feeds artifacts..."
-          gh api repos/${{ github.repository }}/actions/artifacts --paginate -q '.artifacts[] | select(.name | startswith("rss-feeds-")) | .id' > artifact_ids.txt
+      - name: Install GitHub CLI
+        run: sudo apt-get install gh -y
 
+      - name: Delete rss-feeds artifacts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Fetching artifact IDs for deletion..."
+          gh api repos/${{ github.repository }}/actions/artifacts --paginate \
+            -q '.artifacts[] | select(.name | startswith("rss-feeds-")) | .id' > artifact_ids.txt
+
+          echo "Deleting artifacts..."
           while read id; do
             echo "Deleting artifact ID: $id"
             gh api --method DELETE repos/${{ github.repository }}/actions/artifacts/$id
