@@ -30,7 +30,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run script
-        run: python hourly_agro_scraper.py --since-hours 1.5
+        run: python hourly_agro_scraper.py #--since-hours 1.5
 
       - name: Set timestamp
         id: set_time
