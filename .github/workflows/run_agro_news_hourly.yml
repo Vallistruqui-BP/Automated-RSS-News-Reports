@@ -1,4 +1,4 @@
-name: Run RSS News Bot (hourly)
+name: Run Agro News Bot (hourly)
 
 on:
   schedule:
@@ -12,6 +12,8 @@ jobs:
       SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
       SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
       RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -28,10 +30,14 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run script
-        run: python hourly_agro_scraper.py --since-hours 1.5 #-- since-days 1
+        run: python hourly_agro_scraper.py --since-hours 1.5
 
-      - name: Upload JSON files as artifacts
+      - name: Set timestamp
+        id: set_time
+        run: echo "timestamp=$(date +'%Y%m%dT%H%M')" >> $GITHUB_OUTPUT
+
+      - name: Upload JSON files as timestamped artifact
         uses: actions/upload-artifact@v4
         with:
-            name: rss-feeds
-            path: RSS_FEEDS_*.json
+          name: rss-feeds-${{ steps.set_time.outputs.timestamp }}
+          path: RSS_FEEDS_*.json
