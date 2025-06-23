@@ -105,7 +105,7 @@ def normalize_text(text: str) -> str:
     nk = unicodedata.normalize('NFKD', text)
     return nk.encode('ascii', 'ignore').decode('ascii').lower()
 
-timestamp = datetime.utcnow().strftime("%Y_%m_%d__%H_%M")
+timestamp = datetime.utcnow().strftime("%Y_%m_%d__%H_%M_%S")
 
 def parse_args():
     p = argparse.ArgumentParser(description="Fetch multiple RSS feeds, filter by keywords & date, emit JSON.")
