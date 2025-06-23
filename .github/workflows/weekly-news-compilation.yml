@@ -1,4 +1,4 @@
-name: Weekly Agro Summary
+name: News Summary (weekly)
 
 on:
   schedule:
