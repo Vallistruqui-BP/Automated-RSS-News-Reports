@@ -8,40 +8,13 @@ import time
 import unicodedata
 from datetime import datetime, timedelta
 
-# You can change them to suit your news coverage preference
-KEYWORDS = [
-    # GAMING
-    "gaming",
-    "videojuegos",
-    "gamer",
-    "eSports",
-    "torneos gaming",
-    "streamers",
-    "Twitch",
-    "Steam",
-    "PlayStation",
-    "Xbox",
-    "Nintendo",
-    "comunidad gamer",
-    "juegos online",
-    
-    # ENTREPRENEURSHIP
-    "emprendedores",
-    "startups",
-    "emprender",
-    "aceleradoras",
-    "incubadoras",
-    "rondas de inversión",
-    "inversión ángel",
-    "unicornio",
-    "fintech",
-    "capital de riesgo",
-    "economía del conocimiento",
-    "negocio digital",
-    "startup tecnológica",
-    "innovación"
-    ]
+import os
 
+def load_keywords_from_env() -> list[str]:
+    raw = os.getenv("KEYWORDS", "")
+    return [k.strip().lower() for k in raw.split(",") if k.strip()]
+
+KEYWORDS = load_keywords_from_env()
 
 # You can add as many RSS links as you want provided that said news coverage site has RSS links available
 RSS_FEEDS = [
