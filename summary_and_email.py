@@ -88,19 +88,44 @@ def load_and_merge(input_dir):
     print(f"🔄 Merged {len(merged)} sources.")
     return merged
 
-def build_email_body(merged, days_desc="last period"):
-    body = "<h2> Resumen Diario Noticias</h2>\n"
-    body += f"<p>🗓️ Noticias de {days_desc} (generado: {datetime.now().strftime('%d/%m/%Y %H:%M')})</p>\n"
-    for source, articles in merged.items():
-        body += f"<h3>🔵 {source}</h3><ul>\n"
-        articles.sort(key=lambda x: x["published"])
-        for art in articles:
-            dt = datetime.fromisoformat(art["published"]).strftime("%d/%m %H:%M")
-            body += f"<li>📰 [{dt}] <a href='{art['link']}' target='_blank'>{art['title']}</a></li>\n"
+def build_email_body(merged, keywords=None, days_desc="último período"):
+    if keywords is None:
+        keywords = ["AI", "climate", "startup", "space", "cybersecurity"]  # Definí tus keywords acá
+
+    body = "<h2>📰 Resumen Diario de Noticias</h2>\n"
+    body += f"<p>📅 Noticias del {days_desc} (generado: {datetime.now().strftime('%d/%m/%Y %H:%M')})</p>\n"
+
+    # Preparamos agrupación por keyword
+    categorized = {kw: [] for kw in keywords}
+
+    for source_articles in merged.values():
+        for article in source_articles:
+            title = article["title"]
+            link = article["link"]
+            published = article.get("published", "")
+            dt = ""
+            if published:
+                try:
+                    dt = datetime.fromisoformat(published).strftime("%d/%m %H:%M")
+                except:
+                    dt = published
+
+            for kw in keywords:
+                if kw.lower() in title.lower():
+                    categorized[kw].append((dt, title, link))
+
+    # Armamos el cuerpo del mail por keyword
+    for kw, articles in categorized.items():
+        if not articles:
+            continue
+        body += f"<h3>🔹 {kw}</h3>\n<ul>\n"
+        for dt, title, link in articles:
+            body += f"<li>[{dt}] <a href='{link}' target='_blank'>{title}</a></li>\n"
         body += "</ul>\n"
+
     body += "<hr><p style='font-size:small;color:gray;'>Email generado automáticamente</p>"
     return body
-
+    
 def send_email(html_body, subject):
     SENDER = os.getenv("SENDER_EMAIL")
     PASS   = os.getenv("SENDER_PASSWORD")
