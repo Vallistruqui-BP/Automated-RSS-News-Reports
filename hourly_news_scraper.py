@@ -6,6 +6,7 @@ import os
 import sys
 import time
 import unicodedata
+import re
 from datetime import datetime, timedelta
 
 import os
