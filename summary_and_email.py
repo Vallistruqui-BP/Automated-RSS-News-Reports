@@ -11,8 +11,8 @@ import zipfile
 import io
 import shutil
 
-OWNER = 'Vallistruqui-BP'
-REPO = 'Automated-RSS-News-Reports'
+OWNER = os.getenv("OWNER")
+REPO = os.getenv("REPO")
 API_URL = f'https://api.github.com/repos/{OWNER}/{REPO}/actions/artifacts'
 
 # Load token from environment variable
