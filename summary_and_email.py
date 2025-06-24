@@ -88,37 +88,31 @@ def load_and_merge(input_dir):
     print(f"🔄 Merged {len(merged)} sources.")
     return merged
 
-def build_email_body(merged, keywords=None, days_desc="último período"):
-    keywords = os.getenv("KEYWORDS")
+def build_email_body(merged, days_desc="último período"):
+    from collections import defaultdict
 
     body = "<h2>📰 Resumen Diario de Noticias</h2>\n"
     body += f"<p>📅 Noticias del {days_desc} (generado: {datetime.now().strftime('%d/%m/%Y %H:%M')})</p>\n"
 
-    # Preparamos agrupación por keyword
-    categorized = {kw: [] for kw in keywords}
+    categorized = defaultdict(list)
 
-    for source_articles in merged.values():
-        for article in source_articles:
-            title = article["title"]
-            link = article["link"]
-            published = article.get("published", "")
+    for articles in merged.values():
+        for article in articles:
+            matched_keywords = article.get("matched_keywords", [])
             dt = ""
-            if published:
+            if "published" in article:
                 try:
-                    dt = datetime.fromisoformat(published).strftime("%d/%m %H:%M")
+                    dt = datetime.fromisoformat(article["published"]).strftime("%d/%m %H:%M")
                 except:
-                    dt = published
+                    dt = article["published"]
 
-            for kw in keywords:
-                if kw.lower() in title.lower():
-                    categorized[kw].append((dt, title, link))
+            for kw in matched_keywords:
+                categorized[kw].append((dt, article["title"], article["link"]))
 
-    # Armamos el cuerpo del mail por keyword
-    for kw, articles in categorized.items():
-        if not articles:
-            continue
+    # Ordenar keywords alfabéticamente para consistencia
+    for kw in sorted(categorized.keys()):
         body += f"<h3>🔹 {kw}</h3>\n<ul>\n"
-        for dt, title, link in articles:
+        for dt, title, link in categorized[kw]:
             body += f"<li>[{dt}] <a href='{link}' target='_blank'>{title}</a></li>\n"
         body += "</ul>\n"
 
