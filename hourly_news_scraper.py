@@ -112,19 +112,15 @@ def main():
             try:
                 published_time = datetime.fromtimestamp(time.mktime(entry.published_parsed))
             except AttributeError:
-#                print("⚠️  Entrada sin fecha, se omite.")
                 continue
 
             if not (start_date <= published_time <= end_date):
-#                print(f"⏩ {entry.get('title', '')[:60]}... fuera de rango de fecha ({published_time.isoformat()})")
                 continue
 
             title = entry.get("title", "")
 
-            # Prefer content:encoded, then description, then summary, then empty string
             content = ""
             if "content" in entry and entry.content:
-                # content:encoded is usually in entry.content[0].value
                 content = entry.content[0].value
             elif "content:encoded" in entry:
                 content = entry["content:encoded"]
@@ -135,7 +131,11 @@ def main():
 
             content_to_check = normalize_text(title + " " + content)
 
-            matched_keywords = [k for k in KEYWORDS if normalize_text(k) in content_to_check]
+            matched_keywords = [
+                k for k in KEYWORDS
+                if re.search(r'\b{}\b'.format(re.escape(normalize_text(k))), content_to_check)
+            ]
+
             if matched_keywords:
                 print(f"✅ MATCH: {title[:80]}...")
                 print(f"   🗝️ Keywords: {matched_keywords}")
@@ -143,10 +143,8 @@ def main():
                     "title": title,
                     "link": entry.get("link", ""),
                     "published": published_time.isoformat(),
-                    "matched_keywords": matched_keywords  # <-- Add this line
+                    "matched_keywords": matched_keywords
                 })
-            else:
-                print(f"❌ NO MATCH: {title[:80]}...")
 
         print("")
 
