@@ -16,9 +16,9 @@ REPO = 'Automated-RSS-News-Reports'
 API_URL = f'https://api.github.com/repos/{OWNER}/{REPO}/actions/artifacts'
 
 # Load token from environment variable
-token = os.getenv("MY_GITHUB_TOKEN") or os.getenv("GITHUB_TOKEN") or os.getenv("PAT_TOKEN")
+token = os.getenv("GITHUB_TOKEN")
 if not token:
-    print("❌ Missing GitHub token. Set GITHUB_TOKEN or PAT_TOKEN environment variable.", file=sys.stderr)
+    print("❌ Missing GitHub token. Set GITHUB_TOKEN", file=sys.stderr)
     sys.exit(1)
 
 # Common headers
