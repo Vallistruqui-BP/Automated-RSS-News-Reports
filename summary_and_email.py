@@ -89,8 +89,7 @@ def load_and_merge(input_dir):
     return merged
 
 def build_email_body(merged, keywords=None, days_desc="último período"):
-    if keywords is None:
-        keywords = ["AI", "climate", "startup", "space", "cybersecurity"]  # Definí tus keywords acá
+    keywords = os.getenv("KEYWORDS")
 
     body = "<h2>📰 Resumen Diario de Noticias</h2>\n"
     body += f"<p>📅 Noticias del {days_desc} (generado: {datetime.now().strftime('%d/%m/%Y %H:%M')})</p>\n"
