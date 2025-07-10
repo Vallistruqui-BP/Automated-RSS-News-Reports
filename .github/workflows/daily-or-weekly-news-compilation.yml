@@ -54,7 +54,7 @@ jobs:
 
           echo "Extracting artifacts..."
           for zip in raw_zips/*.zip; do
-            unzip "$zip" -d raw
+            unzip -o "$zip" -d raw
           done
 
       - name: Merge, dedupe & send email
